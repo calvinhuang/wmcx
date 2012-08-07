@@ -3,8 +3,8 @@
  */
 body {
 	background-color: #FFF;
-	color: #202020;
-	font: normal 100%/180% Helvetica, Arial, sans-serif;
+	color: #444;
+	font: normal 110%/180% Helvetica, Arial, sans-serif;
 }
 
 body, img {
@@ -92,6 +92,9 @@ a[name="top"] {
   background: -o-linear-gradient(top, #e3e3e3, #f0f0f0);
 }
 
+h1, h2, h3, h4, h5, h6 {
+	color: #202020;
+}
 h2 {
 	margin-top: 2em;
 }
@@ -150,14 +153,46 @@ div.edit-citation button {
 /**
  * 	Media-specific Styles
  */
-@media screen and (min-width:480px) and (max-width:800px) {
-  /* Target landscape smartphones, portrait tablets, narrow desktops
+@media screen and (min-width:480px) {
+  /* Target landscape smartphones and wider
   */
-	body {
-		min-width: 480px;
+	#TopNav {
+		font-size: 95%;
+	}
+	#content {
+		font-size: 95%;
+		line-height: 170%;
 	}
 }
 
+@media screen and (min-width:800px) {
+  /* Target narrow desktops and wider
+  */
+	#TopNav {
+		font-size: 110%;
+	}
+	#content {
+		font-size: 100%;
+		line-height: 180%;
+	}
+}
+
+@media screen and (min-width:480px) and (max-width:800px) {
+  /* Target landscape smartphones, portrait tablets, narrow desktops
+  */
+}
+
 @media screen and (max-width:479px) {
-  /* Target portrait smartphones */
+	/* Target portrait smartphones */
+	#content {
+		font-size: 90%;
+		line-height: 160%;
+	}
+}
+
+@media screen and (max-width:338px) {
+	/* Target super narrow screens */
+	#TopNav {
+		font-size: 74%;
+	}
 }
