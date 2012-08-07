@@ -30,7 +30,7 @@ $(function(){
 	}
 	
 	// build fixed ToC
-	$('#content>h2').each(function(){
+	$('#content>h2').each(function() {
 		var id = this.id,
 				navList = $('#TopNav>ul'),
 				text = $(this).contents()
@@ -44,64 +44,82 @@ $(function(){
 	});
 	
 	// highlight active nav item
-	$(window).bind('hashchange', function(){
+	$(window).bind('hashchange', function() {
 		var fragment = location.hash;
 		$('#TopNav>ul>li').removeClass('active');
 		$('#TopNav>ul>li>a[href$="'+fragment+'"]').parent().addClass('active');
 		toggleSection(fragment);
 	});
-	$('#TopNav>ul>li>a').click(function(){
+	$('#TopNav>ul>li>a').click(function() {
 		$(window).trigger('hashchange');
 	});
 	
 	// toggle section expand/collapse
-	$('.toggle>button').click(function(event){
-		var section = $(this).parent().next('.section'),
+	$('.toggle>button').click(function(event) {
+		var heading = $(this).parents('.toggle'),
+				section = heading.next('.section'),
+				id = heading.attr('id'),
 				buttonText;
 		event.stopPropagation(); // don't need an infinite loop
 		section.toggle();
 		buttonText = section.css('display') === 'none'? 'show' : 'hide';
 		$(this).text(buttonText);
-
+		if (buttonText === 'show') {
+			$('div.edit-citation[data-cite-section="' + id + '"]').hide();
+		}
 	});
-	$('.toggle').click(function(){
+	$('.toggle').click(function() {
 		$('button', this).click();
 	});
 	
 	// easy citation
-	$('sup.missing:contains("citation needed")').each(function(){
+	$('sup.missing:contains("citation needed")').each(function() {
 		$(this).html('<a href="#" class="citation">citation needed</a>');
 	});
 	$('a.citation')
 		.each(function(){
 			$(this).attr('data-cite-id', citeCounter++);
 		})
-		.click(function(){
+		.click(function() {
 			if (!hasStorage) {
 				return false;
 			}
 			var id = $(this).attr('data-cite-id'),
 					cite = $('div.edit-citation[data-cite-id="'+id+'"]'),
 					src, content, citeContent,
-					pos = $(this).offset();
+					pos = $(this).offset(),
+					section = $(this).parents('.section'),
+					sectionId = section.prev('h2').attr('id');
+					
+					pos.top = pos.top + $(this).height();
 			
 			if (!cite.length) {
 				content = localStorage.getItem('citation.'+id);
 				src = $('#TmplEditCitation').html();
-				cite = $(src).attr('data-cite-id', id).appendTo('body');
+				cite = $(src)
+					.attr('data-cite-id', id)
+					.attr('data-cite-section', sectionId)
+					.appendTo('body');
 				citeContent = cite.children('.citation-content');
 				citeContent.text(content); 
 			} else {
 				cite.toggle();
+				if (cite.css('display') === 'none') {
+					// offset calculations become inaccurate
+					return;
+				}
+			}
+			if (pos.left + cite.outerWidth() > $(document).innerWidth()) {
+				pos.left = $(document).innerWidth() - cite.outerWidth();
 			}
 			cite.offset(pos);
 		});
 	$('body')
-		.on('click', 'button.citation-cancel', function(){
+		.on('click', 'button.citation-cancel', function() {
 			var cite = $(this).parent();
 			cite.toggle();
 		})
-		.on('click', 'button.citation-save', function(){
+		.on('click', 'button.citation-save', function() {
 			if (!hasStorage) {
 				return false;
 			}
@@ -113,7 +131,7 @@ $(function(){
 		});
 	
 	// don't navigate
-	$('body').on('click', 'a.citation', function(){
+	$('body').on('click', 'a.citation', function() {
 		return false;
 	});
 	

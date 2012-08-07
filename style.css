@@ -92,6 +92,10 @@ a[name="top"] {
   background: -o-linear-gradient(top, #e3e3e3, #f0f0f0);
 }
 
+h2 {
+	margin-top: 2em;
+}
+
 button {
 	padding: .25em .6em;
 	margin: -.4em .75em .4em; 
@@ -139,8 +143,7 @@ div.edit-citation .citation-content {
 	height: 6em;
 }
 div.edit-citation button {
-	margin-left: 0;
-	margin-right: .6em;
+	margin: -.4em .6em 1em 0;
 }
 
 
