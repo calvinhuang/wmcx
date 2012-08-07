@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 	color: #202020;
 }
 h2 {
-	margin-top: 2em;
+	padding-top: 2em;
 }
 
 button {
