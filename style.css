@@ -123,6 +123,26 @@ button:active {
   background: -o-linear-gradient(top, #e3e3e3, #f0f0f0);
 }
 
+div.edit-citation {
+	width: 50%;
+	max-width: 100%;
+	border: 1px solid #bbb;
+	background-color: #fff;
+	position: absolute;
+	text-align: right;
+}
+div.edit-citation .citation-content {
+	text-align: left;
+	background-color: #f6f6f6;
+	border: 1px solid #dfdfdf;
+	margin: .5em .5em 1em;
+	height: 6em;
+}
+div.edit-citation button {
+	margin-left: 0;
+	margin-right: .6em;
+}
+
 
 /**
  * 	Media-specific Styles

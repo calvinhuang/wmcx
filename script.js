@@ -8,7 +8,18 @@
 $(function(){
 	'use strict';
 	
-	var citeCounter = 0;
+	var citeCounter = 0, hasStorage;
+	
+	// test for localStorage
+	hasStorage = (function() {
+		try {
+			localStorage.setItem('hasStorage', 'true');
+			localStorage.removeItem('hasStorage');
+			return true;
+		} catch(e) {
+			return false;
+		}
+	}());
 	
 	function toggleSection(id) {
 		var heading = $(id),
@@ -61,12 +72,48 @@ $(function(){
 	$('sup.missing:contains("citation needed")').each(function(){
 		$(this).html('<a href="#" class="citation">citation needed</a>');
 	});
-	$('a.citation').each(function(){
-		$(this).attr('data-cite-id', citeCounter++);
-	});
+	$('a.citation')
+		.each(function(){
+			$(this).attr('data-cite-id', citeCounter++);
+		})
+		.click(function(){
+			if (!hasStorage) {
+				return false;
+			}
+			var id = $(this).attr('data-cite-id'),
+					cite = $('div.edit-citation[data-cite-id="'+id+'"]'),
+					src, content, citeContent,
+					pos = $(this).offset();
+			
+			if (!cite.length) {
+				content = localStorage.getItem('citation.'+id);
+				src = $('#TmplEditCitation').html();
+				cite = $(src).attr('data-cite-id', id).appendTo('body');
+				citeContent = cite.children('.citation-content');
+				citeContent.text(content); 
+			} else {
+				cite.toggle();
+			}
+			cite.offset(pos);
+		});
+	$('body')
+		.on('click', 'button.citation-cancel', function(){
+			var cite = $(this).parent();
+			cite.toggle();
+		})
+		.on('click', 'button.citation-save', function(){
+			if (!hasStorage) {
+				return false;
+			}
+			var cite = $(this).parent(),
+					id = cite.attr('data-cite-id'),
+					content = $(this).prev('.citation-content').text();
+			localStorage.setItem('citation.'+id, content);
+			cite.toggle();
+		});
 	
+	// don't navigate
 	$('body').on('click', 'a.citation', function(){
-		
 		return false;
 	});
 	
