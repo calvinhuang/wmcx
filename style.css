@@ -29,7 +29,7 @@ a[name="top"] {
 	width: 100%;
 	left: 0;
 	top: 0;
-	font-size: 80%;
+	font-size: 74%;
 }
 #TopNav ul {
 	float: left;
@@ -200,9 +200,9 @@ div.edit-citation button {
 	}
 }
 
-@media screen and (max-width:338px) {
+@media screen and (min-width:475px) {
 	/* Target super narrow screens */
 	#TopNav {
-		font-size: 74%;
+		font-size: 80%;
 	}
 }
