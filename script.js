@@ -9,7 +9,7 @@ $(function(){
 	$(".section").hide();
 	
 	// build fixed ToC
-	$('h2').each(function(){
+	$('#content>h2').each(function(){
 		var id = this.id,
 				navList = $('#TopNav>ul'),
 				text = $(this).contents()

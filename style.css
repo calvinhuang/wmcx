@@ -29,6 +29,7 @@ a[name="top"] {
 	width: 100%;
 	left: 0;
 	top: 0;
+	font-size: 80%;
 }
 #TopNav ul {
 	float: left;
@@ -70,6 +71,7 @@ a[name="top"] {
 	font-weight: normal;
 	padding: .25em .75em;
 	text-shadow: 0px 1px 0px #fff;
+	text-decoration: none;
 }
 #TopNav ul>li>a,
 #TopNav ul>li>a:visited,
@@ -77,6 +79,7 @@ a[name="top"] {
 	color: #666;
 }
 #TopNav ul>li>a:hover {
+	text-decoration: underline;
 	color: #000;
 }
 #TopNav>ul>li>a:active,
