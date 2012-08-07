@@ -8,9 +8,9 @@
 $(function(){
 	'use strict';
 	
-	var citeCounter = 0, hasStorage, renderCitation;
+	var citeCounter = 0, hasStorage, renderMarker;
 	
-	renderCitation = function(id) {
+	renderMarker = function(id) {
 		var citation, marker = $('a.citation[data-cite-id="'+id+'"]');
 		if (hasStorage) {
 			citation = localStorage.getItem('citation.'+id);
@@ -91,57 +91,57 @@ $(function(){
 		.each(function(){
 			var id = citeCounter++, citation;
 			$(this).attr('data-cite-id', id);
-			renderCitation(id);
+			renderMarker(id);
 		})
 		.click(function() {
 			if (!hasStorage) {
 				return false;
 			}
 			var id = $(this).attr('data-cite-id'),
-					cite = $('div.edit-citation[data-cite-id="'+id+'"]'),
-					src, content, citeContent,
+					citeEdit = $('div.edit-citation[data-cite-id="'+id+'"]'),
+					src, content, editBox,
 					pos = $(this).offset(),
 					section = $(this).parents('.section'),
 					sectionId = section.prev('h2').attr('id');
 					
 					pos.top = pos.top + $(this).height();
 			
-			if (!cite.length) {
+			if (!citeEdit.length) {
 				content = localStorage.getItem('citation.'+id);
 				src = $('#TmplEditCitation').html();
-				cite = $(src)
+				citeEdit = $(src)
 					.attr('data-cite-id', id)
 					.attr('data-cite-section', sectionId)
 					.appendTo('body');
-				citeContent = cite.children('.citation-content');
-				citeContent.text(content); 
+				editBox = citeEdit.children('.citation-content');
+				editBox.text(content); 
 			} else {
-				cite.toggle();
-				if (cite.css('display') === 'none') {
+				citeEdit.toggle();
+				if (citeEdit.css('display') === 'none') {
 					// offset calculations become inaccurate
 					return;
 				}
 			}
-			if (pos.left + cite.outerWidth() > $(document).innerWidth()) {
-				pos.left = $(document).innerWidth() - cite.outerWidth();
+			if (pos.left + citeEdit.outerWidth() > $(document).innerWidth()) {
+				pos.left = $(document).innerWidth() - citeEdit.outerWidth();
 			}
-			cite.offset(pos);
+			citeEdit.offset(pos);
 		});
 	$('body')
 		.on('click', 'button.citation-cancel', function() {
-			var cite = $(this).parent();
-			cite.toggle();
+			var citeEdit = $(this).parent();
+			citeEdit.toggle();
 		})
 		.on('click', 'button.citation-save', function() {
 			if (!hasStorage) {
 				return false;
 			}
-			var cite = $(this).parent(),
-					id = cite.attr('data-cite-id'),
+			var citeEdit = $(this).parent(),
+					id = citeEdit.attr('data-cite-id'),
 					content = $(this).prev('.citation-content').text();
 			localStorage.setItem('citation.'+id, content);
-			cite.toggle();
-			renderCitation(id);
+			citeEdit.toggle();
+			renderMarker(id);
 		});
 	
 	// don't navigate
