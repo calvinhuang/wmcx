@@ -1,12 +1,13 @@
 /**
  * Wikimedia Coding Exercise Script.js  
  */
-/*globals console, Node */
+/*globals console, Node, escape */
 
 $(function(){
 	'use strict';
 	
-	$(".section").hide().text('show');
+	$('.section').hide();
+	$('.toggle>button').text('show');
 	
 	// build fixed ToC
 	$('#content>h2').each(function(){
@@ -17,11 +18,12 @@ $(function(){
 						return this.nodeType === Node.TEXT_NODE;
 					}).text();
 		if (id) {
-				$('<li><a href="#'+id+'" class="toc-link">' + text + '</a></li>').appendTo(navList);
+			$('<li><a href="#' + escape(id) + '" class="toc-link">no-XSS</a></li>')
+				.appendTo(navList).find('a.toc-link').text(text);
 		}
 	});
 	// expand section when navigated to
-	$('a.toc-link').click(function(){
+	$('a.toc-link, #toc>li>a').click(function(){
 		var id = $(this).attr('href'),
 				heading = $(id),
 				section = heading.next('.section');
