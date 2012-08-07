@@ -8,7 +8,18 @@
 $(function(){
 	'use strict';
 	
-	var citeCounter = 0, hasStorage;
+	var citeCounter = 0, hasStorage, renderCitation;
+	
+	renderCitation = function(id) {
+		var citation, marker = $('a.citation[data-cite-id="'+id+'"]');
+		if (hasStorage) {
+			citation = localStorage.getItem('citation.'+id);
+			if (citation) {
+				marker.text(+id + 1);
+				marker.parent('sup.missing').removeClass('missing').addClass('sourced');
+			}
+		}
+	};
 	
 	// test for localStorage
 	hasStorage = (function() {
@@ -78,7 +89,9 @@ $(function(){
 	});
 	$('a.citation')
 		.each(function(){
-			$(this).attr('data-cite-id', citeCounter++);
+			var id = citeCounter++, citation;
+			$(this).attr('data-cite-id', id);
+			renderCitation(id);
 		})
 		.click(function() {
 			if (!hasStorage) {
@@ -128,6 +141,7 @@ $(function(){
 					content = $(this).prev('.citation-content').text();
 			localStorage.setItem('citation.'+id, content);
 			cite.toggle();
+			renderCitation(id);
 		});
 	
 	// don't navigate

@@ -140,6 +140,17 @@ button:active {
 	margin-bottom: .4em;
 }
 
+sup.sourced>a.citation:before {
+	content: '[';
+	color: #444;
+	text-decoration: none;
+}
+sup.sourced>a.citation:after {
+	content: ']';
+	color: #444;
+	text-decoration: none;
+}
+
 div.edit-citation {
 	width: 50%;
 	max-width: 100%;
