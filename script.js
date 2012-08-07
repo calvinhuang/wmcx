@@ -6,7 +6,7 @@
 $(function(){
 	'use strict';
 	
-	$(".section").hide();
+	$(".section").hide().text('show');
 	
 	// build fixed ToC
 	$('#content>h2').each(function(){
